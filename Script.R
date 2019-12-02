@@ -91,9 +91,13 @@ ggplot(data = train, aes(V27, V28)) +
 
 
 #we'll be using knn3 from the caret package for our knn analysis
-#defining the matrix of predictors
+#defining the matrix of predictors and outcome
 predictor_mat <- as.matrix(train[,1:30])
-outcome <-as.factor(train$Class, levels = c(1, 0))
+outcome <-factor(train$Class, levels = c(1, 0), ordered = TRUE)
+
+
 knn_fit <- knn3(predictor_mat, outcome, k = 3)
 y_hat_knn <- predict(knn_fit, as.data.frame(validation[,1:30]), type = "class")
-confusionMatrix(data = y_hat_knn, reference = validation$Class)
+confusionMatrix(data = y_hat_knn, reference = factor(validation$Class, levels = c(1, 0), ordered = TRUE))
+
+
